@@ -39,8 +39,14 @@ go_binary(
 )
 
 container_layer(
-    name = "bb_browser_layer_executable",
+    name = "bb_browser_layer_backend",
     files = [":bb_browser"],
+)
+
+container_layer(
+    name = "bb_browser_layer_frontend",
+    directory = "/static",
+    files = ["//cmd/bb_browser/frontend"],
 )
 
 container_layer(
@@ -56,7 +62,8 @@ container_image(
     name = "bb_browser_container",
     entrypoint = ["/bb_browser"],
     layers = [
-        ":bb_browser_layer_executable",
+        ":bb_browser_layer_backend",
+        ":bb_browser_layer_frontend",
         ":bb_browser_layer_resources",
     ],
     visibility = ["//visibility:public"],
